@@ -2,11 +2,12 @@
 import logging
 import os
 from os.path import basename, splitext
+import pickle
 
 import numpy
 import pymc
 import traceback
-from bitc.experiments import ExperimentMicroCal, ExperimentYaml
+from bitc.experiments import ExperimentMicroCal, ExperimentMicroCalWithDummyITC, ExperimentYaml
 from bitc.instruments import known_instruments, Instrument
 from bitc.models import TwoComponentBindingModel, CompetitiveBindingModel
 from bitc.parser import bitc_mcmc_parser
@@ -159,13 +160,34 @@ def input_to_experiment(datafile, heatsfile):
     if datafile_extension in ['.yaml', '.yml']:
         experiment = ExperimentYaml(datafile, experiment_name, instrument)
     elif datafile_extension in ['.itc']:
-        experiment = ExperimentMicroCal(datafile, experiment_name, instrument)
+        if user_input["--dummy_itc_file"]:
+            logging.info("Dummy itc file is used")
+            experiment = ExperimentMicroCalWithDummyITC(datafile, experiment_name, instrument)
+        else:
+            experiment = ExperimentMicroCal(datafile, experiment_name, instrument)
     else:
         raise ValueError('Unknown file type. Check your file extension')
 
     # Read the integrated heats
     experiment.read_integrated_heats(heatsfile)
+
+    _pickle_experimental_info(experiment)
     return experiment
+
+def _pickle_experimental_info(experiment, out="experimental_information.pickle"):
+    """
+    """
+    data_keys = ["data_filename", "instrument", "number_of_injections", "equilibration_time", "stir_speed", 
+                "reference_power", "cell_volume", "injections", "filter_period_end_time", "filter_period_midpoint_time", 
+                "differential_power", "name", "data_source", "number_of_injections", "target_temperature", "stir_rate", 
+                "syringe_concentration", "cell_concentration", "time", "heat", "temperature", "filter_period_end_time", 
+                "differential_power", "cell_temperature", "jacket_temperature"]
+
+    exper_info = {key : getattr(experiment, key, None) for key in data_keys}
+    pickle.dump(exper_info, open(out, "w"))
+    
+    return None
+
 
 # Construct a Model from Experiment object.
 
@@ -209,3 +231,12 @@ model.mcmc.sample(iter=niters, burn=nburn, thin=nthin, progress_bar=True, verbos
 
 if user_input['twocomponent']:    # Plot individual terms.
     plot_two_component_model_results(model)
+
+
+print "pickling mcmc traces"
+traces = {}
+for s in model.mcmc.stochastics:
+    traces[s.__name__] = s.trace(chain=None)
+
+pickle.dump(traces, open("traces.pickle", "w"))
+
