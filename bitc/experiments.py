@@ -857,3 +857,110 @@ class ExperimentYaml(BaseExperiment):
 
 class ExperimentOrigin(BaseExperiment):
     pass
+
+
+class ExperimentMicroCalWithDummyITC(ExperimentMicroCal):
+    """
+    The same as ExperimentMicroCal, but only reads the top part of an ITC file.
+    Useful when input data are extracted from published paper,
+    where heat and experimental design parameters can be obtained but no differential power.
+    """
+
+    # TODO Add type verification
+
+    def __init__(self, data_filename, experiment_name, instrument):
+        """
+        Initialize an experiment from a Microcal VP-ITC formatted .itc file.
+
+        ARGUMENTS
+            data_filename (String) - the filename of the Microcal VP-ITC formatted .itc file to initialize the experiment from
+
+        TODO
+          * Add support for other formats of datafiles (XML, etc.).
+        """
+        # Initialize.
+        super(ExperimentMicroCal, self).__init__(data_filename, experiment_name, instrument)
+        # the source filename from which data is read
+        # concentrations of various species in syringe
+        self.syringe_contents = list()
+        # concentrations of various species in sample cell
+        self.sample_cell_contents = list()
+
+        # list of injections (and their associated data)
+        self.injections = list()
+        # time at end of filtering period
+        # cell temperature
+        self.name = experiment_name
+
+        # Check to make sure we can access the file.
+        if not os.access(data_filename, os.R_OK):
+            raise "The file '%s' cannot be opened." % data_filename
+
+        # Open the file and read is contents.
+        infile = open(data_filename, 'r')
+        lines = infile.readlines()
+        infile.close()
+
+        # Check the header to make sure it is a VP-ITC text-formatted .itc
+        # file.
+        if lines[0][0:4] != '$ITC':
+            raise "File '%s' doesn't appear to be a Microcal VP-ITC data file." % data_filename
+
+        # Store the datafile filename.
+        self.data_filename = data_filename
+
+        # Extract and store data about the experiment.
+        self.number_of_injections = int(lines[1][1:].strip())
+        self.target_temperature = (int(lines[3][1:].strip()) + 273.15) * ureg.kelvin   # convert from C to K
+        self.equilibration_time = int(lines[4][1:].strip()) * ureg.second
+        self.stir_rate = int(lines[5][1:].strip()) * ureg.revolutions_per_minute
+        self.reference_power = float(lines[6][1:].strip()) * ureg.microcalorie / ureg.second
+
+        # Extract and store metadata about injections.
+        injection_number = 0
+        for line in lines[10:]:
+            if line[0] == '$':
+                # Increment injection counter.
+                injection_number += 1
+
+                # Read data about injection.
+                (injection_volume,
+                injection_duration,
+                spacing,
+                filter_period) = line[1:].strip().split(",")
+
+                # Extract data for injection and apply appropriate unit
+                # conversions.
+                injectiondict = dict()
+                injectiondict['number'] = injection_number
+                injectiondict['volume'] = float(injection_volume) * ureg.microliter
+                injectiondict['duration'] = float(injection_duration) * ureg.second
+                # time between beginning of injection and beginning of next injection
+                injectiondict['spacing'] = float(spacing) * ureg.second
+                # time over which data channel is averaged to produce a single measurement
+                injectiondict['filter_period'] = float(filter_period) * ureg.second
+
+                self.injections.append(Injection(**injectiondict))
+            else:
+                break
+
+        # Store additional data about experiment.
+        parsecline = 11 + self.number_of_injections
+        # supposed concentration of compound in syringe
+        self.syringe_concentration = {'ligand': float(lines[parsecline][1:].strip()) * ureg.millimole / ureg.liter}
+        for inj in self.injections:
+            # TODO add support for multiple components
+            inj.contents(sum(self.syringe_concentration.values()))
+        # supposed concentration of receptor in cell
+        self.cell_concentration = {'macromolecule': float(lines[parsecline + 1][1:].strip()) * ureg.millimole / ureg.liter}
+        self.cell_volume = float(lines[parsecline + 2][1:].strip()) * ureg.milliliter  # cell volume
+        self.injection_tick = [0]
+
+        # Allocate storage for power measurements.
+        self.time = list()
+        self.heat = list()
+        self.temperature = list()
+
+        self.cell_temperature = ureg.Quantity(numpy.array( [self.target_temperature.m]*self.number_of_injections, numpy.float64 ), ureg.kelvin)
+        return 
+
