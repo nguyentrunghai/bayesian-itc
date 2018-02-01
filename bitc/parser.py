@@ -163,6 +163,7 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
       --niters=<n>                           No. of iterations for mcmc sampling             [default: 2000000]
       --nburn=<n>                            No. of Burn-in iterations for mcmc sampling     [default: 500000]
       --nthin=<n>                            Thinning period for mcmc sampling               [default: 500]
+      --dummy_itc_file                       The input itc file is a dummy one
 """
     arguments = docopt(__usage__, argv=argv, version='bitc_mcmc.py, pre-alpha')
     schema = Schema({'--help': bool,  # True or False are accepted
@@ -199,6 +200,7 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
                      '--cs': Or(None, And(Use(float), lambda n:  n > 0.0)),  # Not specified, or a float
                      '--dc': And(Use(float), lambda n:  n > 0.0),  # a float greater than 0
                      '--ds': And(Use(float), lambda n:  n > 0.0),  # a float greater than 0
+                     '--dummy_itc_file': bool,
 
                      })
 
