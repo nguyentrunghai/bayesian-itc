@@ -1,0 +1,11 @@
+#!/bin/bash
+#PBS -S /bin/bash
+#PBS -o /home/tnguye46/bayesian_itc_reproduce/ABRF_MIRG02/7.gaussian_mcmc/7_MCS-ITC/7_MCS-ITC_mcmc.log 
+#PBS -j oe
+#PBS -l nodes=1:ppn=1,mem=2048mb,walltime=72:00:00
+
+source /home/tnguye46/opt/module/anaconda.sh
+cd /home/tnguye46/bayesian_itc_reproduce/ABRF_MIRG02/7.gaussian_mcmc/7_MCS-ITC
+date
+python /home/tnguye46/bayesian_itc_reproduce/scripts/uncorr_gaussians_mcmc.py --nonlinear_fit_results_file /home/tnguye46/bayesian_itc_reproduce/ABRF_MIRG02/6.nonlinear_fit_results/origin_dg_dh_in_kcal_per_mole.dat --experiment 7_MCS-ITC --iter 310000  --burn 10000  --thin 100 
+date 
