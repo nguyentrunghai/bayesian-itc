@@ -1,0 +1,102 @@
+Fri Feb  9 00:36:04 CST 2018
+variables ['DeltaG', 'DeltaH', 'P0']
+Inputs:
+DeltaH    (std) =        -2.25300 (        0.00807)
+P0        (std) =         0.08280 (        0.00017)
+DeltaG    (std) =        -9.01566 (        0.04232)
+[                  1%                  ] 3671 of 310000 complete in 0.5 sec
+[                  2%                  ] 7179 of 310000 complete in 1.0 sec
+[-                 3%                  ] 10820 of 310000 complete in 1.5 sec
+[-                 4%                  ] 14443 of 310000 complete in 2.0 sec
+[--                5%                  ] 18073 of 310000 complete in 2.5 sec
+[--                7%                  ] 21705 of 310000 complete in 3.0 sec
+[---               8%                  ] 25325 of 310000 complete in 3.5 sec
+[---               9%                  ] 28959 of 310000 complete in 4.0 sec
+[---              10%                  ] 32596 of 310000 complete in 4.5 sec
+[----             11%                  ] 36215 of 310000 complete in 5.0 sec
+[----             12%                  ] 39852 of 310000 complete in 5.5 sec
+[-----            14%                  ] 43487 of 310000 complete in 6.0 sec
+[-----            15%                  ] 47128 of 310000 complete in 6.5 sec
+[------           16%                  ] 50753 of 310000 complete in 7.0 sec
+[------           17%                  ] 54385 of 310000 complete in 7.5 sec
+[-------          18%                  ] 58023 of 310000 complete in 8.0 sec
+[-------          19%                  ] 61662 of 310000 complete in 8.5 sec
+[--------         21%                  ] 65363 of 310000 complete in 9.0 sec
+[--------         22%                  ] 68954 of 310000 complete in 9.5 sec
+[--------         23%                  ] 72506 of 310000 complete in 10.0 sec
+[---------        24%                  ] 76131 of 310000 complete in 10.5 sec
+[---------        25%                  ] 79771 of 310000 complete in 11.0 sec
+[----------       26%                  ] 83394 of 310000 complete in 11.5 sec
+[----------       28%                  ] 87014 of 310000 complete in 12.0 sec
+[-----------      29%                  ] 90651 of 310000 complete in 12.5 sec
+[-----------      30%                  ] 94274 of 310000 complete in 13.0 sec
+[------------     31%                  ] 97916 of 310000 complete in 13.5 sec
+[------------     32%                  ] 101560 of 310000 complete in 14.0 sec
+[------------     33%                  ] 105190 of 310000 complete in 14.5 sec
+[-------------    35%                  ] 108832 of 310000 complete in 15.0 sec
+[-------------    36%                  ] 112468 of 310000 complete in 15.5 sec
+[--------------   37%                  ] 116015 of 310000 complete in 16.0 sec
+[--------------   38%                  ] 119018 of 310000 complete in 16.5 sec
+[---------------  39%                  ] 122856 of 310000 complete in 17.0 sec
+[---------------  40%                  ] 126686 of 310000 complete in 17.5 sec
+[---------------  42%                  ] 130515 of 310000 complete in 18.0 sec
+[---------------- 43%                  ] 134349 of 310000 complete in 18.5 sec
+[---------------- 44%                  ] 138190 of 310000 complete in 19.0 sec
+[-----------------45%                  ] 142021 of 310000 complete in 19.5 sec
+[-----------------47%                  ] 145855 of 310000 complete in 20.0 sec
+[-----------------48%                  ] 149689 of 310000 complete in 20.5 sec
+[-----------------49%                  ] 153526 of 310000 complete in 21.0 sec
+[-----------------50%                  ] 157362 of 310000 complete in 21.5 sec
+[-----------------51%                  ] 161189 of 310000 complete in 22.0 sec
+[-----------------53%                  ] 165023 of 310000 complete in 22.5 sec
+[-----------------54%                  ] 168849 of 310000 complete in 23.0 sec
+[-----------------55%-                 ] 172678 of 310000 complete in 23.5 sec
+[-----------------56%-                 ] 176512 of 310000 complete in 24.0 sec
+[-----------------58%--                ] 180346 of 310000 complete in 24.5 sec
+[-----------------59%--                ] 184180 of 310000 complete in 25/home/tnguye46/opt/anaconda/lib/python2.7/site-packages/matplotlib/collections.py:590: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+  if self._edgecolors == str('face'):
+.0 sec
+[-----------------60%---               ] 188009 of 310000 complete in 25.5 sec
+[-----------------61%---               ] 191840 of 310000 complete in 26.0 sec
+[-----------------63%---               ] 195675 of 310000 complete in 26.5 sec
+[-----------------64%----              ] 199508 of 310000 complete in 27.0 sec
+[-----------------65%----              ] 203343 of 310000 complete in 27.5 sec
+[-----------------66%-----             ] 207180 of 310000 complete in 28.0 sec
+[-----------------68%-----             ] 211017 of 310000 complete in 28.5 sec
+[-----------------69%------            ] 214860 of 310000 complete in 29.0 sec
+[-----------------70%------            ] 218698 of 310000 complete in 29.5 sec
+[-----------------71%-------           ] 222530 of 310000 complete in 30.0 sec
+[-----------------73%-------           ] 226363 of 310000 complete in 30.5 sec
+[-----------------74%--------          ] 230194 of 310000 complete in 31.0 sec
+[-----------------75%--------          ] 234020 of 310000 complete in 31.5 sec
+[-----------------76%---------         ] 237859 of 310000 complete in 32.0 sec
+[-----------------77%---------         ] 241694 of 310000 complete in 32.5 sec
+[-----------------79%----------        ] 245523 of 310000 complete in 33.0 sec
+[-----------------80%----------        ] 249351 of 310000 complete in 33.5 sec
+[-----------------81%-----------       ] 253177 of 310000 complete in 34.0 sec
+[-----------------82%-----------       ] 257009 of 310000 complete in 34.5 sec
+[-----------------84%-----------       ] 260842 of 310000 complete in 35.0 sec
+[-----------------85%------------      ] 264671 of 310000 complete in 35.5 sec
+[-----------------86%------------      ] 268513 of 310000 complete in 36.0 sec
+[-----------------87%-------------     ] 272346 of 310000 complete in 36.5 sec
+[-----------------89%-------------     ] 276178 of 310000 complete in 37.0 sec
+[-----------------90%--------------    ] 280004 of 310000 complete in 37.5 sec
+[-----------------91%--------------    ] 283840 of 310000 complete in 38.0 sec
+[-----------------92%---------------   ] 287666 of 310000 complete in 38.5 sec
+[-----------------94%---------------   ] 291501 of 310000 complete in 39.0 sec
+[-----------------95%----------------  ] 295267 of 310000 complete in 39.5 sec
+[-----------------96%----------------  ] 299104 of 310000 complete in 40.0 sec
+[-----------------97%----------------- ] 302938 of 310000 complete in 40.5 sec
+[-----------------98%----------------- ] 306772 of 310000 complete in 41.0 sec
+[-----------------100%-----------------] 310000 of 310000 complete in 41.4 sec
+Plotting DeltaH
+Plotting P0
+Plotting DeltaG
+
+
+MCMC estimates:
+DeltaH    (std) =        -2.25299 (        0.00809)
+P0        (std) =         0.08280 (        0.00017)
+DeltaG    (std) =        -9.01509 (        0.04258)
+DONE
+Fri Feb  9 00:36:51 CST 2018
