@@ -1,0 +1,15 @@
+Wed Feb  7 08:56:33 CST 2018
+/home/tnguye46/opt/anaconda/lib/python2.7/site-packages/matplotlib/collections.py:590: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+  if self._edgecolors == str('face'):
+/home/tnguye46/opt/src/bayesian-itc/scripts/bitc_mcmc.py:36: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
+  xlow = x_sorted[low_index]
+/home/tnguye46/opt/src/bayesian-itc/scripts/bitc_mcmc.py:37: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
+  xhigh = x_sorted[high_index]
+Plotting ubtln36b18082014-P0
+Plotting ubtln36b18082014-Ls
+Plotting ubtln36b18082014-DeltaG
+Plotting ubtln36b18082014-DeltaH
+Plotting ubtln36b18082014-DeltaH_0
+Plotting ubtln36b18082014-sigma
+pickling mcmc traces
+Wed Feb  7 21:31:42 CST 2018
