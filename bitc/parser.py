@@ -164,6 +164,9 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
       --nburn=<n>                            No. of Burn-in iterations for mcmc sampling     [default: 500000]
       --nthin=<n>                            Thinning period for mcmc sampling               [default: 500]
       --dummy_itc_file                       The input itc file is a dummy one
+      --uniform_cell_concentration           Use uniform prior for cell concentration if True
+      --uniform_syringe_concentration        Use uniform prior for syringe concentration if True
+      --concentration_range_factor <c_facctor>        To define range of uniform prior. It will be between stated_value/this_factor and stated_value*this_factor [default: 100.]
 """
     arguments = docopt(__usage__, argv=argv, version='bitc_mcmc.py, pre-alpha')
     schema = Schema({'--help': bool,  # True or False are accepted
@@ -201,7 +204,10 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
                      '--dc': And(Use(float), lambda n:  n > 0.0),  # a float greater than 0
                      '--ds': And(Use(float), lambda n:  n > 0.0),  # a float greater than 0
                      '--dummy_itc_file': bool,
-
+                     '--uniform_cell_concentration': bool,
+                     '--uniform_syringe_concentration': bool,
+                     '--concentration_range_factor': Use(float),
                      })
 
     return schema.validate(arguments)
+
