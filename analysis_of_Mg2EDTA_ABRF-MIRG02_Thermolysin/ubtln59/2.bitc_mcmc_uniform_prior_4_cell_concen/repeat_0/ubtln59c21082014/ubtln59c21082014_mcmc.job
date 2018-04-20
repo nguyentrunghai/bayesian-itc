@@ -1,0 +1,11 @@
+#!/bin/bash
+#PBS -S /bin/bash
+#PBS -o /home/tnguye46/bayesian_itc_reproduce/ubtln59/2.bitc_mcmc_uniform_prior_4_cell_concen/repeat_0/ubtln59c21082014/ubtln59c21082014_mcmc.log 
+#PBS -j oe
+#PBS -l nodes=1:ppn=1,mem=2048mb,walltime=72:00:00
+
+source /home/tnguye46/opt/module/anaconda.sh
+cd /home/tnguye46/bayesian_itc_reproduce/ubtln59/2.bitc_mcmc_uniform_prior_4_cell_concen/repeat_0/ubtln59c21082014
+date
+python /home/tnguye46/opt/src/bayesian-itc/scripts/bitc_mcmc.py twocomponent /home/tnguye46/bayesian_itc_reproduce/ubtln59/1.itc_origin_heat_files/ubtln59c21082014.itc /home/tnguye46/bayesian_itc_reproduce/ubtln59/1.itc_origin_heat_files/ubtln59c21082014.TXT --dc 0.100000  --ds 0.001000  --dummy_itc_file  --uniform_cell_concentration   --concentration_range_factor 100.000000  --niters 11000000  --nburn 1000000  --nthin 2000 -vvv
+date 
