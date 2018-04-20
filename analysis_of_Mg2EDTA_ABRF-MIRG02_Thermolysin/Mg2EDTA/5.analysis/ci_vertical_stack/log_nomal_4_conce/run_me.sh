@@ -1,10 +1,10 @@
 #!/bin/bash
 
-export SCRIPT="../../../scripts/run_plot_bci_vs_gci.py"
+export SCRIPT="/home/tnguye46/opt/src/bayesian-itc/analysis_of_Mg2EDTA_ABRF-MIRG02_Thermolysin/scripts/run_plot_bci_vs_gci.py"
 
-export MCMC_DIR="../../2.bitc_mcmc/repeat_0"
+export MCMC_DIR="/home/tnguye46/bayesian_itc_reproduce/Mg2EDTA/2.bitc_mcmc/repeat_0"
 
-export NONLIN_RES="../../3.nonlinear_fit_results/origin_dg_dh_in_kcal_per_mole.dat"
+export NONLIN_RES="/home/tnguye46/bayesian_itc_reproduce/Mg2EDTA/3.nonlinear_fit_results/origin_dg_dh_in_kcal_per_mole.dat"
 
 export EXPE1="Mg1EDTAp1a Mg1EDTAp1b Mg1EDTAp1c Mg1EDTAp1d Mg1EDTAp1e"
 
