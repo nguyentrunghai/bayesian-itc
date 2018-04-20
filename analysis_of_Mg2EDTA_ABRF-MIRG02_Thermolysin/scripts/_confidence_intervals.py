@@ -327,8 +327,8 @@ def plot_containing_rates(predicted_rates, observed_rates, out,
                             ylimits=[0, 100],
                             nticks=6,
 
-                            color="k",
-                            marker="o",
+                            colors=None,
+                            markers=None,
                             markersize=5,
 
                             diagonal_line_style="-",
@@ -343,17 +343,29 @@ def plot_containing_rates(predicted_rates, observed_rates, out,
                             ):
     """
     """
+    assert isinstance(predicted_rates, list), "predicted_rates must be a list"
+    assert isinstance(observed_rates, list), "predicted_rates must be a list"
+
     assert len(predicted_rates) == len(observed_rates), "predicted_rates and observed_rates do not have the same len"
+
     if observed_rate_errors is not None:
         assert len(observed_rates) == len(observed_rate_errors), "observed_rates and observed_rate_errors do not have the same len"
     else:
-        observed_rate_errors = [None for _ in range(len(predicted_rates))]
+        observed_rate_errors = [[None for _ in line] for line in predicted_rates]
+
+    if colors is None:
+        colors = ["k" for _ in range(len(predicted_rates))]
+
+    if markers is None:
+        markers = ["o" for _ in range(len(predicted_rates))]
 
     plt.figure(figsize=figure_size)
     ax = plt.axes()
 
     for i in range(len(predicted_rates)):
-        plt.errorbar( predicted_rates[i], observed_rates[i], yerr=observed_rate_errors[i], marker=marker, ms=markersize, c=color, linestyle="None")
+        for j in range( len(predicted_rates[i]) ):
+            plt.errorbar( predicted_rates[i][j], observed_rates[i][j], yerr=observed_rate_errors[i][j], marker=markers[i],
+                          ms=markersize, c=colors[i], linestyle="None")
 
     if show_diagonal_line:
         plt.plot( xlimits, ylimits, linestyle=diagonal_line_style, lw=diagonal_line_w, color=diagonal_line_c )

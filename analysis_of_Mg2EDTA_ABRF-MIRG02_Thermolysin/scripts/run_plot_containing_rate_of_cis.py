@@ -54,8 +54,8 @@ for level in LEVELS:
 b_rate_errors = [e/2. for e in b_rate_errors]
 
 out = args.parameter + "_bayesian.pdf"
-plot_containing_rates(LEVELS_PERCENT, b_rates, out,
-                        observed_rate_errors=b_rate_errors,
+plot_containing_rates([LEVELS_PERCENT], [b_rates], out,
+                        observed_rate_errors=[b_rate_errors],
                         xlabel=XLABEL,
                         ylabel=YLABEL,
                         xlimits=[0, 100],
@@ -81,7 +81,7 @@ for level in LEVELS:
     g_rates.append(g_rate)
 
 out = args.parameter + "_nonlinear_ls.pdf"
-plot_containing_rates(LEVELS_PERCENT, g_rates, out,
+plot_containing_rates([LEVELS_PERCENT], [g_rates], out,
                         observed_rate_errors=None,
                         xlabel=XLABEL,
                         ylabel=YLABEL,
@@ -89,4 +89,6 @@ plot_containing_rates(LEVELS_PERCENT, g_rates, out,
                         ylimits=[0, 100])
 
 
-
+# dump result
+pickle.dump({"LEVELS_PERCENT":LEVELS_PERCENT, "b_rates":b_rates, "b_rate_errors":b_rate_errors, "g_rates":g_rates},
+            open(args.parameter + "_results.pkl", "w"))
