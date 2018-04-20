@@ -4,24 +4,28 @@ import glob
 import argparse
 parser = argparse.ArgumentParser()
 
-parser.add_argument( "--itc_data_dir",              type=str, default="/home/tnguye46/bayesian_itc_reproduce/ubtln59/1.itc_origin_heat_files")
-parser.add_argument( "--heat_data_dir",             type=str, default="/home/tnguye46/bayesian_itc_reproduce/ubtln59/1.itc_origin_heat_files")
+parser.add_argument( "--itc_data_dir",     type=str, default="/home/tnguye46/bayesian_itc_reproduce/ubtln59/1.itc_origin_heat_files")
+parser.add_argument( "--heat_data_dir",    type=str, default="/home/tnguye46/bayesian_itc_reproduce/ubtln59/1.itc_origin_heat_files")
 
-parser.add_argument( "--exclude_experiments",       type=str, default="")
+parser.add_argument( "--exclude_experiments",   type=str, default="")
 
 parser.add_argument( "--script",                type=str, default ="/home/tnguye46/opt/src/bayesian-itc/scripts/bitc_mcmc.py")
 parser.add_argument( "--heat_file_suffix",      type=str, default =".TXT")
 
 parser.add_argument( "--dc",                    type=float, default=0.1)      # cell concentration relative uncertainty
-parser.add_argument( "--ds",                    type=float, default=0.1)      # syringe concentration relative uncertainty
+parser.add_argument( "--ds",                    type=float, default=0.001)      # syringe concentration relative uncertainty
 
 parser.add_argument( "--dummy_itc_file",        action="store_true", default=False)
+
+parser.add_argument( "--uniform_cell_concentration",        action="store_true", default=False)
+parser.add_argument( "--uniform_syringe_concentration",     action="store_true", default=False)
+parser.add_argument( "--concentration_range_factor",        type=float, default=100.)
 
 parser.add_argument( "--niters",            type=int, default=11000000)
 parser.add_argument( "--nburn",             type=int, default=1000000)
 parser.add_argument( "--nthin",             type=int, default=2000)
 
-parser.add_argument( "--verbosity",         type=str, default="-v")
+parser.add_argument( "--verbosity",         type=str, default="-vvv")
 
 args = parser.parse_args()
 
@@ -57,6 +61,16 @@ for name in exper_names:
     else:
         dummy_itc_file = ''' '''
 
+    if args.uniform_cell_concentration:
+        uniform_cell_concentration = ''' --uniform_cell_concentration '''
+    else:
+        uniform_cell_concentration = ''' '''
+
+    if args.uniform_syringe_concentration:
+        uniform_syringe_concentration = ''' --uniform_syringe_concentration '''
+    else:
+        uniform_syringe_concentration = ''' '''
+
     qsub_script = '''#!/bin/bash
 #PBS -S /bin/bash
 #PBS -o %s '''%log_file + '''
@@ -69,7 +83,8 @@ cd ''' + out_dir + '''\n''' + \
     '''python ''' + args.script + ''' twocomponent ''' + itc_file + ''' ''' + integ_file + \
     ''' --dc %f '''%args.dc + \
     ''' --ds %f '''%args.ds + \
-    dummy_itc_file + \
+    dummy_itc_file + uniform_cell_concentration + uniform_syringe_concentration + \
+    ''' --concentration_range_factor %f '''%args.concentration_range_factor + \
     ''' --niters %d '''%args.niters + \
     ''' --nburn %d '''%args.nburn + \
     ''' --nthin %d '''%args.nthin + \
