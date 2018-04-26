@@ -166,7 +166,7 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
       --dummy_itc_file                       The input itc file is a dummy one
       --uniform_cell_concentration           Use uniform prior for cell concentration if True
       --uniform_syringe_concentration        Use uniform prior for syringe concentration if True
-      --concentration_range_factor <c_facctor>        To define range of uniform prior. It will be between stated_value/this_factor and stated_value*this_factor [default: 100.]
+      --concentration_range_factor <c_facctor>        To define range of uniform prior. It will be between stated_value/this_factor and stated_value*this_factor [default: 10.]
 """
     arguments = docopt(__usage__, argv=argv, version='bitc_mcmc.py, pre-alpha')
     schema = Schema({'--help': bool,  # True or False are accepted
