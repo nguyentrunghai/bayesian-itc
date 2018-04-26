@@ -219,10 +219,12 @@ class BindingModel(object):
         """Define a pymc prior for a concentration, using micromolar units
         :rtype : pymc.Lognormal
         """
+        m = stated_concentration / unit
+        v = (uncertainty / unit)**2
         return pymc.Lognormal(name,
-                              mu=log(stated_concentration / unit),
-                              tau=1.0 / log(1.0 + (uncertainty / stated_concentration) ** 2),
-                              value=stated_concentration / unit
+                              mu = numpy.log( m / numpy.sqrt(1 + ( v / (m**2) ) ) ),
+                              tau = 1.0 / numpy.log( 1 + (v / (m**2)) ),
+                              value = m
         )
 
     @staticmethod
@@ -286,7 +288,7 @@ class TwoComponentBindingModel(BindingModel):
 
     def __init__(self, experiment, cell_concentration=None, syringe_concentration=None, dcell=0.1, dsyringe=0.1,
                  uniform_cell_concentration=False, uniform_syringe_concentration=False,
-                 concentration_range_factor=100.0):
+                 concentration_range_factor=10.0):
         """
         Initialize a TwoComponentBindingModel
         :param experiment: ExperimentMicrocal or ExperimentYAML object
