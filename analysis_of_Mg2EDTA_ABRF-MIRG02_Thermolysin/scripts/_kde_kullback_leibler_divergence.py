@@ -162,3 +162,29 @@ def plot_pair_of_annotated_heatmap(data_1, data_2, out):
     return None
 
 
+def plot_triple_of_annotated_heatmap(data_1, data_2, data_3, out):
+    """
+    """
+    figure_size=(6.4, 6.4)
+    dpi=300
+    sns.set(font_scale=0.70)
+
+    vmin = np.min( [ data_1.min(),  data_2.min() ] )
+    vmax = np.max( [ data_1.max(),  data_2.max() ] )
+
+    fig, ax = plt.subplots(3,1, sharex=True, figsize=figure_size)
+    my_cmap = plt.get_cmap('Reds')
+
+    sns.heatmap(data_1, ax=ax[0], annot=True, fmt=".2f", linewidths=.5, cmap=my_cmap, xticklabels=False,
+                yticklabels=False, vmin=vmin, vmax=vmax)
+
+    sns.heatmap(data_2, ax=ax[1], annot=True, fmt=".2f", linewidths=.5, cmap=my_cmap, xticklabels=False,
+                yticklabels=False, vmin=vmin, vmax=vmax)
+
+    sns.heatmap(data_3, ax=ax[2], annot=True, fmt=".2f", linewidths=.5, cmap=my_cmap, xticklabels=False,
+                yticklabels=False, vmin=vmin, vmax=vmax)
+
+    plt.tight_layout()
+    plt.savefig(out, dpi=dpi)
+    return None
+

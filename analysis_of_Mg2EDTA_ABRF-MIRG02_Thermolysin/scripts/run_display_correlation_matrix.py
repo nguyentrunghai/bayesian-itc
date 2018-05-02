@@ -8,11 +8,14 @@ import numpy as np
 
 TRACES_FILE = "traces.pickle"
 
+
 def _covariance(a, b):
     return np.cov(a,b)[0,1]
 
+
 def _correlation(a, b):
     return np.corrcoef(a,b)[0,1]                                                                                                                                    
+
 
 def correlation_matrix(mcmc_samples):
     """
@@ -24,6 +27,7 @@ def correlation_matrix(mcmc_samples):
         for j in range(len(variables)):
             corr_matrix[i,j] = _correlation(mcmc_samples[variables[i]], mcmc_samples[variables[j]])
     return variables, corr_matrix
+
 
 def display_correlation_matrix(corr_matrix, variables):
     """
@@ -66,6 +70,7 @@ corr_matrices = np.array(corr_matrices)
 mean_matrix = corr_matrices.mean(axis=0)
 std_matrix  = corr_matrices.std(axis=0)
 
+print "variables", variables
 text_string = display_correlation_matrix_with_mean_std(mean_matrix, std_matrix, variables[0])
 print "\n\n" + text_string
 
