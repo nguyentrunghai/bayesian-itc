@@ -1,4 +1,0 @@
-#               N       N_std       K(1/mole)   K_std       dH(cal/mole)   	dH_std(cal/mole)        dS(cal/mole/K)  dS_std
-ubtln35L		0.775	0.0101		3.88E6	    9.49E5		-6127		    127.4			        9.60			0.0	
-ubtln35m		0.709	0.00330		3.87E6	    3.03E5		-6313		    43.79			        8.97			0.0
-ubtln35o		0.755	0.00311		3.61E6	    2.49E5		-6402		    39.20			        8.54			0.0									
