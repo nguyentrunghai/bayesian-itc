@@ -1,0 +1,20 @@
+traces_files: ['/home/tnguye46/bayesian_itc/Mg2EDTA/2.bitc_mcmc_lognomP0_lognomLs/repeat_0/Mg1EDTAp1a/traces.pickle', '/home/tnguye46/bayesian_itc/Mg2EDTA/2.bitc_mcmc_lognomP0_lognomLs/repeat_1/Mg1EDTAp1a/traces.pickle', '/home/tnguye46/bayesian_itc/Mg2EDTA/2.bitc_mcmc_lognomP0_lognomLs/repeat_2/Mg1EDTAp1a/traces.pickle', '/home/tnguye46/bayesian_itc/Mg2EDTA/2.bitc_mcmc_lognomP0_lognomLs/repeat_3/Mg1EDTAp1a/traces.pickle', '/home/tnguye46/bayesian_itc/Mg2EDTA/2.bitc_mcmc_lognomP0_lognomLs/repeat_4/Mg1EDTAp1a/traces.pickle']
+variables [['DeltaG', 'DeltaH', 'DeltaH_0', 'Ls', 'P0', 'log_sigma'], ['DeltaG', 'DeltaH', 'DeltaH_0', 'Ls', 'P0', 'log_sigma'], ['DeltaG', 'DeltaH', 'DeltaH_0', 'Ls', 'P0', 'log_sigma'], ['DeltaG', 'DeltaH', 'DeltaH_0', 'Ls', 'P0', 'log_sigma'], ['DeltaG', 'DeltaH', 'DeltaH_0', 'Ls', 'P0', 'log_sigma']]
+
+
+                        DeltaG                        DeltaH                       DeltaH_0                         Ls                            P0                        log_sigma           
+
+
+DeltaG      1.0000000000(0.0000000000)     0.5040123930(0.0103924126)     0.2804309645(0.0075714963)     0.5505219734(0.0093990792)     0.5530202007(0.0092966788)     -0.0029399211(0.0170085159)     
+
+DeltaH      0.5040123930(0.0103924126)     1.0000000000(0.0000000000)     -0.0691900032(0.0142654561)     0.9893330530(0.0002119447)     0.9884478132(0.0001934513)     0.0066878239(0.0130345794)     
+
+DeltaH_0    0.2804309645(0.0075714963)     -0.0691900032(0.0142654561)     1.0000000000(0.0000000000)     -0.0001379430(0.0132572712)     0.0127535456(0.0135798715)     0.0157288734(0.0085585189)     
+
+Ls          0.5505219734(0.0093990792)     0.9893330530(0.0002119447)     -0.0001379430(0.0132572712)     1.0000000000(0.0000000000)     0.9988662392(0.0000321031)     0.0076858386(0.0137765862)     
+
+P0          0.5530202007(0.0092966788)     0.9884478132(0.0001934513)     0.0127535456(0.0135798715)     0.9988662392(0.0000321031)     1.0000000000(0.0000000000)     0.0084869288(0.0140714227)     
+
+log_sigma   -0.0029399211(0.0170085159)     0.0066878239(0.0130345794)     0.0157288734(0.0085585189)     0.0076858386(0.0137765862)     0.0084869288(0.0140714227)     1.0000000000(0.0000000000)     
+
+
