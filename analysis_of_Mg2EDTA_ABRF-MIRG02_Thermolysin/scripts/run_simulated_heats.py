@@ -1,6 +1,7 @@
 """
 run simulated heat
 """
+from __future__ import print_function
 
 import argparse
 
@@ -233,3 +234,5 @@ _write_exper_design_file(args.number_of_sim_exper, args.name_suffix,
                          args.number_of_injections,
                          args.injection_vol_micro_litter,
                          args.experimental_design_out)
+
+print("DONE")
