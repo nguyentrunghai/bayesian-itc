@@ -344,7 +344,7 @@ class TwoComponentBindingModel(BindingModel):
         # Uncertainty
         dP0 = dcell * P0_stated
 
-        # Define priors for concentrations.
+        # Define priors for cell concentration.
         if not uniform_cell_concentration:
             logger.info("Use log normal prior for cell concentration")
             self.P0 = BindingModel._lognormal_concentration_prior('P0', P0_stated, dP0, ureg.millimolar)
@@ -352,12 +352,13 @@ class TwoComponentBindingModel(BindingModel):
             logger.info("Use uniform prior for cell concentration.")
 
             assert concentration_range_factor > 1, "concentration_range_factor must be greater than one."
-            concentration_min = P0_stated/concentration_range_factor
-            concentration_max = P0_stated*concentration_range_factor
-            logger.info("The range is from " + str(concentration_min) + " to " + str(concentration_max) ) 
+            P0_min = P0_stated/concentration_range_factor
+            P0_max = P0_stated*concentration_range_factor
+            logger.info("The range is from " + str(P0_min) + " to " + str(P0_max))
 
-            self.P0 = BindingModel._uniform_prior_with_guesses_and_units('P0', P0_stated, concentration_max, concentration_min, ureg.millimolar)
+            self.P0 = BindingModel._uniform_prior_with_guesses_and_units('P0', P0_stated, P0_max, P0_min, ureg.millimolar)
 
+        # Define priors for syringe concentration.
         if not uniform_syringe_concentration:
             logger.info("Use log normal prior for syringe concentration")
             self.Ls = BindingModel._lognormal_concentration_prior('Ls', Ls_stated, dLs, ureg.millimolar)
@@ -365,11 +366,11 @@ class TwoComponentBindingModel(BindingModel):
             logger.info("Use uniform prior for syringe concentration.")
 
             assert concentration_range_factor > 1, "concentration_range_factor must be greater than one."
-            concentration_min = Ls_stated / concentration_range_factor
-            concentration_max = Ls_stated * concentration_range_factor
-            logger.info("The range is from " + str(concentration_min) + " to " + str(concentration_max) )
+            Ls_min = Ls_stated / concentration_range_factor
+            Ls_max = Ls_stated * concentration_range_factor
+            logger.info("The range is from " + str(Ls_min) + " to " + str(Ls_max))
 
-            self.Ls = BindingModel._uniform_prior_with_guesses_and_units('Ls', Ls_stated, concentration_max, concentration_min, ureg.millimolar)
+            self.Ls = BindingModel._uniform_prior_with_guesses_and_units('Ls', Ls_stated, Ls_max, Ls_min, ureg.millimolar)
 
 
         # Extract heats from experiment
@@ -984,7 +985,9 @@ class RacemicMixtureBindingModel(BindingModel):
     Racemic Mixture Binding Model
     """
 
-    def __init__(self, experiment, cell_concentration=None, syringe_concentration=None, dcell=0.1, dsyringe=0.1):
+    def __init__(self, experiment, cell_concentration=None, syringe_concentration=None, dcell=0.1, dsyringe=0.1,
+                 uniform_cell_concentration=False, uniform_syringe_concentration=False,
+                 concentration_range_factor=10.):
         """
         Initialize a RacemicMixtureBindingModel
         :param experiment: ExperimentMicrocal or ExperimentYAML object
@@ -992,6 +995,10 @@ class RacemicMixtureBindingModel(BindingModel):
         :param syringe_concentration: override for syringe/ligand concentration to be used (float in mM)
         :param dcell: relative uncertainty in cell concentration, default 0.1
         :param dsyringe: relative uncertainty in syringe concentration, default 0.1
+        :param uniform_cell_concentration: use uniform prior for cell_concentration if True, else use log normal (bool)
+        :param uniform_syringe_concentration: use uniform prior for syringe_concentration if True, else use log normal (bool)
+        :param concentration_range_factor: the range of uniform prior will be from (stated_value / concentration_range_factor)
+                                            to (stated_value * concentration_range_factor) (float)
         """
 
         # HAI: I keep the same units as in TwoComponentBindingModel becuase they are working correctly in the cluster
@@ -1040,8 +1047,38 @@ class RacemicMixtureBindingModel(BindingModel):
         dP0 = dcell * P0_stated
 
         # Define priors for concentrations.
-        self.P0 = BindingModel._lognormal_concentration_prior('P0', P0_stated, dP0, ureg.millimolar)
-        self.Ls = BindingModel._lognormal_concentration_prior('Ls', Ls_stated, dLs, ureg.millimolar)
+        #self.P0 = BindingModel._lognormal_concentration_prior('P0', P0_stated, dP0, ureg.millimolar)
+        #self.Ls = BindingModel._lognormal_concentration_prior('Ls', Ls_stated, dLs, ureg.millimolar)
+
+        # Define priors for cell concentration.
+        if not uniform_cell_concentration:
+            logger.info("Use log normal prior for cell concentration")
+            self.P0 = BindingModel._lognormal_concentration_prior('P0', P0_stated, dP0, ureg.millimolar)
+        else:
+            logger.info("Use uniform prior for cell concentration.")
+
+            assert concentration_range_factor > 1, "concentration_range_factor must be greater than one."
+            P0_min = P0_stated / concentration_range_factor
+            P0_max = P0_stated * concentration_range_factor
+            logger.info("The range is from " + str(P0_min) + " to " + str(P0_max))
+
+            self.P0 = BindingModel._uniform_prior_with_guesses_and_units('P0', P0_stated, P0_max,
+                                                                         P0_min, ureg.millimolar)
+
+        # Define priors for syringe concentration.
+        if not uniform_syringe_concentration:
+            logger.info("Use log normal prior for syringe concentration")
+            self.Ls = BindingModel._lognormal_concentration_prior('Ls', Ls_stated, dLs, ureg.millimolar)
+        else:
+            logger.info("Use uniform prior for syringe concentration.")
+
+            assert concentration_range_factor > 1, "concentration_range_factor must be greater than one."
+            Ls_min = Ls_stated / concentration_range_factor
+            Ls_max = Ls_stated * concentration_range_factor
+            logger.info("The range is from " + str(Ls_min) + " to " + str(Ls_max))
+
+            self.Ls = BindingModel._uniform_prior_with_guesses_and_units('Ls', Ls_stated, Ls_max,
+                                                                         Ls_min, ureg.millimolar)
 
         # Extract heats from experiment
         q_n = Quantity(numpy.zeros(len(experiment.injections)), 'calorie')
