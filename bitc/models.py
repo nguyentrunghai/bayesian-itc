@@ -1137,10 +1137,10 @@ class RacemicMixtureBindingModel(BindingModel):
 
         d = numpy.sqrt(a*a - 3*b)
 
-        theta = numpy.arccos( ( -2.*a**3 + 9.*a*b - 27.*c) / (2.*d**3) )
+        theta = numpy.arccos((-2.*a**3 + 9.*a*b - 27.*c) / (2.*d**3))
 
-        RL1 = C0_L1*( 2.*d*numpy.cos(theta/3.) -a ) / ( 3.*Kd1 + (2.*d*numpy.cos(theta/3.) -a ) )
-        RL2 = C0_L2*( 2.*d*numpy.cos(theta/3.) -a ) / ( 3.*Kd2 + (2.*d*numpy.cos(theta/3.) -a ) )
+        RL1 = C0_L1*(2.*d*numpy.cos(theta/3.) - a) / (3.*Kd1 + (2.*d*numpy.cos(theta/3.) - a))
+        RL2 = C0_L2*(2.*d*numpy.cos(theta/3.) - a) / (3.*Kd2 + (2.*d*numpy.cos(theta/3.) - a))
         return RL1, RL2
 
 
@@ -1149,24 +1149,21 @@ class RacemicMixtureBindingModel(BindingModel):
     def expected_injection_heats(V0, DeltaVn, P0, Ls, rho, DeltaH1, DeltaH2, DeltaH_0, DeltaG1, DeltaDeltaG, beta, N):
         """
         Expected heats of injection for racemic mixtrue binding model.
-        ARGUMENTS
-        V0 - cell volume (liter)
-        DeltaVn - injection volumes (liter)
-        P0 - Cell concentration (millimolar)
-        Ls - Syringe concentration (millimolar)
-        rho - ratio between concentration of ligand1 and the total concentration of the syringe
+        :param V0: cell volume (liter)
+        :param DeltaVn: injection volumes (liter)
+        :param P0: Cell concentration (millimolar)
+        :param Ls: Syringe concentration (millimolar)
+        :param rho: ratio between concentration of ligand1 and the total concentration of the syringe
+        :param DeltaH1: enthalpies of binding of ligand1 (kcal/mol)
+        :param DeltaH2: enthalpies of binding of ligand2 (kcal/mol)
+        :param DeltaH_0: heat of injection (cal)
+        :param DeltaG1: free energy of binding of ligand1 (kcal/mol)
+        :param DeltaDeltaG: difference in binding free energy between ligand2 and ligand1: DeltaDeltaG = DeltaG1 - DeltaG2
+        :param beta: inverse temperature * gas constant (mole / kcal)
+        :param N: number of injections
 
-        DeltaH1, Deltah2 - enthalpies of binding of ligand1 and ligand2, respectively. (kcal/mol)
-        DeltaG1 - free energy of binding of ligand1 (kcal/mol)
-        DeltaDeltaG - difference in binding free energy between ligand2 and ligand1: DeltaDeltaG = DeltaG1 - DeltaG2
-
-        DeltaH_0 - heat of injection (cal)
-        beta - inverse temperature * gas constant (mole / kcal)
-        N - number of injections
-
-        Returns: q_n - expected injection heat
+        :return: q_n - expected injection heat
         """
-
 
         # compute desociation constant (M)
         DeltaG2 = DeltaG1 + DeltaDeltaG
@@ -1175,8 +1172,8 @@ class RacemicMixtureBindingModel(BindingModel):
         Kd2 = numpy.exp(beta * DeltaG2)   # dissociation constant of ligand2 (M)
 
         # Compute complex concentrations in the sample after injection n.
-        RL1n  = numpy.zeros([N])
-        RL2n  = numpy.zeros([N])
+        RL1n = numpy.zeros([N])
+        RL2n = numpy.zeros([N])
         dcum = 1.0  # cumulative dilution factor (dimensionless)
         for n in range(N):
             # Instantaneous injection model (perfusion)
