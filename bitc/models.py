@@ -968,12 +968,6 @@ class CompetitiveBindingModel(BindingModel):
                 experiment.true_syringe_concentration[species] = 0.0
 
 
-# Container of all models that this module provides for use
-known_models = {'TwoComponent': TwoComponentBindingModel,
-                'Competitive': CompetitiveBindingModel,
-                }
-
-
 
 
 # 
@@ -1311,3 +1305,9 @@ class RacemicMixtureBindingModel(BindingModel):
         log_sigma_max = log_sigma_guess + 5
         return log_sigma_guess, log_sigma_max, log_sigma_min
 
+
+# Container of all models that this module provides for use
+known_models = {'TwoComponent': TwoComponentBindingModel,
+                'Competitive': CompetitiveBindingModel,
+                'RacemicMixture': RacemicMixtureBindingModel,
+                }
