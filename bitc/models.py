@@ -1200,12 +1200,12 @@ class RacemicMixtureBindingModel(BindingModel):
         q_n = numpy.zeros([N])
         # Instantaneous injection model (perfusion)
         # first injection
-        q_n[0] = ( DeltaH1 * V0 * RL1n[0]   +  DeltaH2 * V0 * RL2n[0] ) * 1000 + DeltaH_0
+        q_n[0] = (DeltaH1 * V0 * RL1n[0] + DeltaH2 * V0 * RL2n[0]) * 1000 + DeltaH_0
         # TODO do we need dcum = 1.0 here?
         for n in range(1, N):
             d = 1.0 - (DeltaVn[n] / V0)  # dilution factor (dimensionless)
             # subsequent injections
-            q_n[n] = ( DeltaH1 * V0 * ( RL1n[n] - d*RL1n[n-1] )  +   DeltaH2 * V0 * ( RL2n[n] - d*RL2n[n-1] ) ) * 1000 + DeltaH_0
+            q_n[n] = (DeltaH1 * V0 * (RL1n[n] - d*RL1n[n-1]) + DeltaH2 * V0 * (RL2n[n] - d*RL2n[n-1])) * 1000 + DeltaH_0
 
         return q_n
 
