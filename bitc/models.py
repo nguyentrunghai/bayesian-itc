@@ -1158,7 +1158,8 @@ class RacemicMixtureBindingModel(BindingModel):
         :param DeltaH2: enthalpies of binding of ligand2 (kcal/mol)
         :param DeltaH_0: heat of injection (cal)
         :param DeltaG1: free energy of binding of ligand1 (kcal/mol)
-        :param DeltaDeltaG: difference in binding free energy between ligand2 and ligand1: DeltaDeltaG = DeltaG1 - DeltaG2
+        :param DeltaDeltaG: difference in binding free energy between ligand2 and ligand1: DeltaDeltaG = DeltaG2 - DeltaG1 > 0
+                           DeltaDeltaG is always positive
         :param beta: inverse temperature * gas constant (mole / kcal)
         :param N: number of injections
 
