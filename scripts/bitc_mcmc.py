@@ -9,7 +9,7 @@ import pymc
 import traceback
 from bitc.experiments import ExperimentMicroCal, ExperimentMicroCalWithDummyITC, ExperimentYaml
 from bitc.instruments import known_instruments, Instrument
-from bitc.models import TwoComponentBindingModel, CompetitiveBindingModel
+from bitc.models import TwoComponentBindingModel, CompetitiveBindingModel, RacemicMixtureBindingModel
 from bitc.parser import bitc_mcmc_parser
 from bitc.units import Quantity
 
@@ -66,6 +66,75 @@ def plot_two_component_model_results(model):
     outfile.write('sigma:  %8.5f +- %8.5f ucal/s^(1/2) [%8.5f, %8.5f] \n' % (x, dx, xlow, xhigh))
     outfile.write('\n')
     outfile.close()
+
+
+def plot_racemic_mixture_model_results(model):
+    pymc.Matplot.plot(model.mcmc.trace('P0')[:], '%s-P0' % model.experiment.name)
+
+    pymc.Matplot.plot(model.mcmc.trace('Ls')[:], '%s-Ls' % model.experiment.name)
+    pymc.Matplot.plot(model.mcmc.trace('rho')[:], '%s-rho' % model.experiment.name)
+
+    Ls1 = model.mcmc.trace('Ls')[:] * model.mcmc.trace('rho')[:]
+    pymc.Matplot.plot(Ls1, '%s-Ls1' % model.experiment.name)
+
+    Ls2 = model.mcmc.trace('Ls')[:] * (1. - model.mcmc.trace('rho')[:])
+    pymc.Matplot.plot(Ls2, '%s-Ls2' % model.experiment.name)
+
+    pymc.Matplot.plot(model.mcmc.trace('DeltaH1')[:], '%s-DeltaH1' % model.experiment.name)
+    pymc.Matplot.plot(model.mcmc.trace('DeltaH2')[:], '%s-DeltaH2' % model.experiment.name)
+
+    pymc.Matplot.plot(model.mcmc.trace('DeltaG1')[:], '%s-DeltaG1' % model.experiment.name)
+    pymc.Matplot.plot(model.mcmc.trace('DeltaDeltaG')[:], '%s-DeltaDeltaG' % model.experiment.name)
+    DeltaG2 = model.mcmc.trace('DeltaG1')[:] + model.mcmc.trace('DeltaDeltaG')[:]
+    pymc.Matplot.plot(DeltaG2, '%s-DeltaG2' % model.experiment.name)
+
+    pymc.Matplot.plot(model.mcmc.trace('DeltaH_0')[:], '%s-DeltaH_0' % model.experiment.name)
+    pymc.Matplot.plot(numpy.exp(model.mcmc.trace('log_sigma')[:]), '%s-sigma' % model.experiment.name)
+
+    #  TODO: Plot fits to enthalpogram.
+    # experiment.plot(model=model, filename='%s-enthalpogram.png' %  experiment_name) # todo fix this
+    # Compute confidence intervals in thermodynamic parameters.
+    outfile = open('%s.confidence-intervals.out' % model.experiment.name, 'a+')
+    outfile.write('%s\n' % model.experiment.name)
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(model.mcmc.trace('P0')[:])
+    outfile.write('P0:     %8.2f +- %8.2f uM     [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(model.mcmc.trace('Ls')[:])
+    outfile.write('Ls:     %8.2f +- %8.2f uM     [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(model.mcmc.trace('rho')[:])
+    outfile.write('rho:     %8.2f +- %8.2f       [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(Ls1)
+    outfile.write('Ls1:     %8.2f +- %8.2f uM    [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(Ls2)
+    outfile.write('Ls2:     %8.2f +- %8.2f uM    [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(model.mcmc.trace('DeltaH1')[:])
+    outfile.write('DH1:     %8.2f +- %8.2f kcal/mol   [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(model.mcmc.trace('DeltaH2')[:])
+    outfile.write('DH2:     %8.2f +- %8.2f kcal/mol    [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(model.mcmc.trace('DeltaG1')[:])
+    outfile.write('DG1:     %8.2f +- %8.2f kcal/mol    [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(model.mcmc.trace('DeltaDeltaG')[:])
+    outfile.write('DDG:     %8.2f +- %8.2f kcal/mol    [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(DeltaG2)
+    outfile.write('DG2:     %8.2f +- %8.2f kcal/mol    [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(model.mcmc.trace('DeltaH_0')[:])
+    outfile.write('DH0:    %8.2f +- %8.2f ucal         [%8.2f, %8.2f] \n' % (x, dx, xlow, xhigh))
+
+    [x, dx, xlow, xhigh] = compute_normal_statistics(numpy.exp(model.mcmc.trace('log_sigma')[:]))
+    outfile.write('sigma:  %8.5f +- %8.5f ucal/s^(1/2) [%8.5f, %8.5f] \n' % (x, dx, xlow, xhigh))
+    outfile.write('\n')
+    outfile.close()
+
 
 user_input = bitc_mcmc_parser()
 
