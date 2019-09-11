@@ -3,6 +3,8 @@
 PyMC models to describe ITC binding experiments
 """
 
+from __future__ import print_function
+
 import copy
 import logging
 from math import exp, log
@@ -1120,11 +1122,9 @@ class RacemicMixtureBindingModel(BindingModel):
             assert 0 < drho < 1, "drho out of range: %0.2f" % drho
 
             rho_uncertainty = drho * stated_rho
-            print "rho_uncertainty", rho_uncertainty
-            logger.info("Stated rho: %0.2f" % stated_rho)
-            logger.info("drho: %0.2f" % drho)
-            logger.info("Uncertainty in rho: %0.2f" % rho_uncertainty)
-            print "rho_uncertainty", rho_uncertainty
+            print("Stated rho: %0.2f" % stated_rho)
+            print("drho: %0.2f" % drho)
+            print("Uncertainty in rho: %0.2f" % rho_uncertainty)
 
             self.rho = BindingModel._lognormal_prior('rho', stated_rho, rho_uncertainty)
 
@@ -1158,8 +1158,8 @@ class RacemicMixtureBindingModel(BindingModel):
         return  
                     [RL1, RL2]  complex concentrations (M)
         """
-        assert (Kd1 > 0) and (Kd2 > 0), "Kd1 and Kd2 must be positive"
-        assert (C0_R > 0) and (C0_L1 > 0) and (C0_L2 > 0), "concentrations must be positive"
+        assert (Kd1 > 0) and (Kd2 > 0), "Kd1 and Kd2 must be positive. Kd1=%0.5f, Kd2=%0.5f" %(Kd1, Kd2)
+        assert (C0_R > 0) and (C0_L1 > 0) and (C0_L2 > 0), "concentrations must be positive (R, L1, L2) = (%0.5f, %0.5f, %0.5f)" %(C0_R, C0_L1, C0_L2)
         assert V > 0, "volume must be positive"
 
         a = Kd1 + Kd2 + C0_L1 + C0_L2 - C0_R
