@@ -168,10 +168,10 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
       --nburn=<n>                            No. of Burn-in iterations for mcmc sampling     [default: 500000]
       --nthin=<n>                            Thinning period for mcmc sampling               [default: 500]
       --dummy_itc_file                       The input itc file is a dummy one
-      --uniform_cell_concentration           Use uniform prior for cell concentration if True
-      --uniform_syringe_concentration        Use uniform prior for syringe concentration if True
+      --uniform_cell_concentration           Use uniform prior for cell concentration if True, use log normal if False
+      --uniform_syringe_concentration        Use uniform prior for syringe concentration if True, use log normal if False
       --concentration_range_factor <c_facctor>        To define range of uniform prior. It will be between stated_value/this_factor and stated_value*this_factor [default: 10.]
-      --uniform_rho                          Use uniform prior for rho (racemic mixture binding model) if True
+      --uniform_rho                          Use uniform prior for rho (racemic mixture binding model) if True, use log normal if False
       --stated_rho                           Stated value of rho
       --drho                                 Relative uncertainty in rho
 """
