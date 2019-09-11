@@ -995,7 +995,7 @@ class RacemicMixtureBindingModel(BindingModel):
     def __init__(self, experiment, cell_concentration=None, syringe_concentration=None, dcell=0.1, dsyringe=0.1,
                  uniform_cell_concentration=False, uniform_syringe_concentration=False,
                  concentration_range_factor=10.,
-                 uniform_rho=False, stated_rho=0.5, drho=0.01):
+                 uniform_rho=False, stated_rho=0.5, drho=0.1):
         """
         Initialize a RacemicMixtureBindingModel
         :param experiment: ExperimentMicrocal or ExperimentYAML object
@@ -1012,7 +1012,7 @@ class RacemicMixtureBindingModel(BindingModel):
         :param drho: float, in [0, 1], relative uncertainty in rho
         """
 
-        # HAI: I keep the same units as in TwoComponentBindingModel becuase they are working correctly in the cluster
+        # HAI: I keep the same units as in TwoComponentBindingModel because they are working correctly in the cluster
 
         # Determine number of observations.
         self.N = experiment.number_of_injections
@@ -1126,7 +1126,7 @@ class RacemicMixtureBindingModel(BindingModel):
             print("rho_upper: %0.5f" % rho_upper)
 
             self.rho = BindingModel._uniform_prior('rho', stated_rho, rho_upper, rho_lower)
-            
+
         else:
             print("Use log normal prior for rho.")
             assert 0 < stated_rho < 1, "Stated rho out of range: %0.2f" % stated_rho
