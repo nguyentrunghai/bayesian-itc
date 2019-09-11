@@ -278,7 +278,7 @@ if user_input['twocomponent']:
     except Exception as e:
             logging.error(str(e))
             logging.error(traceback.format_exc())
-            raise Exception("MCMC model could not me constructed!\n" + str(e))
+            raise Exception("MCMC model could not be constructed!\n" + str(e))
 
 elif user_input['racemicmixture']:
     experiment = input_to_experiment(user_input['<datafile>'][0], user_input['<heatsfile>'][0])
@@ -298,7 +298,7 @@ elif user_input['racemicmixture']:
     except Exception as e:
         logging.error(str(e))
         logging.error(traceback.format_exc())
-        raise Exception("MCMC model could not me constructed!\n" + str(e))
+        raise Exception("MCMC model could not be constructed!\n" + str(e))
 
 elif user_input['competitive']:
     experiments = list()
@@ -310,7 +310,7 @@ elif user_input['competitive']:
     except Exception as e:
         logging.error(str(e))
         logging.error(traceback.format_exc())
-        raise Exception("MCMC model could not me constructed!\n" + str(e))
+        raise Exception("MCMC model could not be constructed!\n" + str(e))
 
 else:
     raise ValueError("Something has gone wrong with the selection of a model. Contact your developer.")
