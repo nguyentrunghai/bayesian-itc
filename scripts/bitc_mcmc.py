@@ -268,12 +268,12 @@ if user_input['twocomponent']:
 
     models = list()
     try:
-        model = TwoComponentBindingModel(experiment, cell_concentration=user_input['--cc'], syringe_concentration=user_input['--cs'],
+        model = TwoComponentBindingModel(experiment, cell_concentration=user_input['--cc'],
+                                         syringe_concentration=user_input['--cs'],
                                          dcell=user_input['--dc'], dsyringe=user_input['--ds'],
                                          uniform_cell_concentration=user_input['--uniform_cell_concentration'],
                                          uniform_syringe_concentration=user_input['--uniform_syringe_concentration'],
-                                         concentration_range_factor=user_input['--concentration_range_factor']
-                                         )
+                                         concentration_range_factor=user_input['--concentration_range_factor'])
 
     except Exception as e:
             logging.error(str(e))
