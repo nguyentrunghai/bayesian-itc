@@ -1124,7 +1124,7 @@ class RacemicMixtureBindingModel(BindingModel):
             logger.info("drho: %0.2f" % drho)
             logger.info("Uncertainty in rho: %0.2f" % rho_uncertainty)
 
-            BindingModel._lognormal_prior('rho', stated_rho, rho_uncertainty)
+            self.rho = BindingModel._lognormal_prior('rho', stated_rho, rho_uncertainty)
 
 
         # Define priors for thermodynamic quantities.
