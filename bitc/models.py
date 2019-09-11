@@ -236,7 +236,7 @@ class BindingModel(object):
         m = stated_value
         v = uncertainty**2
         return pymc.Lognormal(name,
-                              mu=numpy.log(m / numpy.sqrt(1 + ( v / (m**2)))),
+                              mu=numpy.log(m / numpy.sqrt(1 + (v / (m**2)))),
                               tau=1.0 / numpy.log(1 + (v / (m**2))),
                               value=m)
 
@@ -1114,17 +1114,28 @@ class RacemicMixtureBindingModel(BindingModel):
         #self.rho = BindingModel._uniform_prior('rho', 0.5, 1., 0.)
 
         if uniform_rho:
-            logger.info("Use uniform prior for rho.")
-            self.rho = BindingModel._uniform_prior('rho', 0.5, 1., 0.)
+            print("Use uniform prior for rho.")
+
+            rho_lower = stated_rho - drho * stated_rho
+            assert rho_lower > 0, "rho_lower must be positive"
+            rho_upper = stated_rho + drho * stated_rho
+            assert rho_upper < 1, "rho_upper must be less than 1"
+
+            print("stated_rho: %0.5f" % stated_rho)
+            print("rho_lower: %0.5f" % rho_lower)
+            print("rho_upper: %0.5f" % rho_upper)
+
+            self.rho = BindingModel._uniform_prior('rho', stated_rho, rho_upper, rho_lower)
+            
         else:
-            logger.info("Use log normal prior for rho.")
+            print("Use log normal prior for rho.")
             assert 0 < stated_rho < 1, "Stated rho out of range: %0.2f" % stated_rho
             assert 0 < drho < 1, "drho out of range: %0.2f" % drho
 
             rho_uncertainty = drho * stated_rho
-            print("Stated rho: %0.2f" % stated_rho)
-            print("drho: %0.2f" % drho)
-            print("Uncertainty in rho: %0.2f" % rho_uncertainty)
+            print("Stated rho: %0.5f" % stated_rho)
+            print("drho: %0.5f" % drho)
+            print("Uncertainty in rho: %0.5f" % rho_uncertainty)
 
             self.rho = BindingModel._lognormal_prior('rho', stated_rho, rho_uncertainty)
 
