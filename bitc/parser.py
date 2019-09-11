@@ -171,6 +171,9 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
       --uniform_cell_concentration           Use uniform prior for cell concentration if True
       --uniform_syringe_concentration        Use uniform prior for syringe concentration if True
       --concentration_range_factor <c_facctor>        To define range of uniform prior. It will be between stated_value/this_factor and stated_value*this_factor [default: 10.]
+      --uniform_rho                          Use uniform prior for rho (racemic mixture binding model) if True
+      --stated_rho                           Stated value of rho
+      --drho                                 Relative uncertainty in rho
 """
     arguments = docopt(__usage__, argv=argv, version='bitc_mcmc.py, pre-alpha')
     schema = Schema({'--help': bool,  # True or False are accepted
@@ -212,6 +215,9 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
                      '--uniform_cell_concentration': bool,
                      '--uniform_syringe_concentration': bool,
                      '--concentration_range_factor': Use(float),
+                     '--uniform_rho': bool,
+                     '--stated_rho': Use(float),
+                     '--drho': Use(float),
                      })
 
     return schema.validate(arguments)
