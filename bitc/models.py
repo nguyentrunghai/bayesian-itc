@@ -1120,6 +1120,7 @@ class RacemicMixtureBindingModel(BindingModel):
             assert 0 < drho < 1, "drho out of range: %0.2f" % drho
 
             rho_uncertainty = drho * stated_rho
+            print "rho_uncertainty", rho_uncertainty
             logger.info("Stated rho: %0.2f" % stated_rho)
             logger.info("drho: %0.2f" % drho)
             logger.info("Uncertainty in rho: %0.2f" % rho_uncertainty)
