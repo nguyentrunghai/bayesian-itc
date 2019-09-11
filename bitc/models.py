@@ -222,10 +222,21 @@ class BindingModel(object):
         m = stated_concentration / unit
         v = (uncertainty / unit)**2
         return pymc.Lognormal(name,
-                              mu = numpy.log( m / numpy.sqrt(1 + ( v / (m**2) ) ) ),
-                              tau = 1.0 / numpy.log( 1 + (v / (m**2)) ),
-                              value = m
-        )
+                              mu=numpy.log(m / numpy.sqrt(1 + (v / (m**2)))),
+                              tau=1.0 / numpy.log(1 + (v / (m**2))),
+                              value=m)
+
+    @staticmethod
+    def _lognormal_prior(name, stated_value, uncertainty):
+        """Define a pymc prior for a deimensionless quantity
+        :rtype : pymc.Lognormal
+        """
+        m = stated_value
+        v = uncertainty**2
+        return pymc.Lognormal(name,
+                              mu=numpy.log(m / numpy.sqrt(1 + ( v / (m**2)))),
+                              tau=1.0 / numpy.log(1 + (v / (m**2))),
+                              value=m)
 
     @staticmethod
     def _normal_observation_with_units(name, q_n_model, q_ns, tau, unit):
@@ -981,7 +992,8 @@ class RacemicMixtureBindingModel(BindingModel):
 
     def __init__(self, experiment, cell_concentration=None, syringe_concentration=None, dcell=0.1, dsyringe=0.1,
                  uniform_cell_concentration=False, uniform_syringe_concentration=False,
-                 concentration_range_factor=10.):
+                 concentration_range_factor=10.,
+                 uniform_rho=False, stated_rho=0.5, drho=0.01):
         """
         Initialize a RacemicMixtureBindingModel
         :param experiment: ExperimentMicrocal or ExperimentYAML object
@@ -993,6 +1005,9 @@ class RacemicMixtureBindingModel(BindingModel):
         :param uniform_syringe_concentration: use uniform prior for syringe_concentration if True, else use log normal (bool)
         :param concentration_range_factor: the range of uniform prior will be from (stated_value / concentration_range_factor)
                                             to (stated_value * concentration_range_factor) (float)
+        :param uniform_rho: use uniform prior for rho
+        :param stated_rho: float in [0, 1], stated value of rho
+        :param drho: float, in [0, 1], relative uncertainty in rho
         """
 
         # HAI: I keep the same units as in TwoComponentBindingModel becuase they are working correctly in the cluster
@@ -1094,7 +1109,22 @@ class RacemicMixtureBindingModel(BindingModel):
         self.DeltaH1 = BindingModel._uniform_prior_with_guesses_and_units('DeltaH1', 0., 100., -100., ureg.kilocalorie/ureg.mole)
         self.DeltaH2 = BindingModel._uniform_prior_with_guesses_and_units('DeltaH2', 0., 100., -100., ureg.kilocalorie/ureg.mole)
 
-        self.rho = BindingModel._uniform_prior('rho', 0.5, 1., 0.)
+        #self.rho = BindingModel._uniform_prior('rho', 0.5, 1., 0.)
+
+        if uniform_rho:
+            logger.info("Use uniform prior for rho.")
+            self.rho = BindingModel._uniform_prior('rho', 0.5, 1., 0.)
+        else:
+            logger.info("Use log normal prior for rho.")
+            assert 0 < stated_rho < 1, "Stated rho out of range: %0.2f" % stated_rho
+            assert 0 < drho < 1, "drho out of range: %0.2f" % drho
+
+            rho_uncertainty = drho * stated_rho
+            logger.info("Stated rho: %0.2f" % stated_rho)
+            logger.info("Uncertainty in rho: %0.2f" % rho_uncertainty)
+
+            BindingModel._lognormal_prior('rho', stated_rho, rho_uncertainty)
+
 
         # Define priors for thermodynamic quantities.
         self.log_sigma = BindingModel._uniform_prior('log_sigma', log_sigma_guess, log_sigma_max, log_sigma_min)
