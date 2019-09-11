@@ -286,12 +286,14 @@ elif user_input['racemicmixture']:
     models = list()
     try:
         model = RacemicMixtureBindingModel(experiment, cell_concentration=user_input['--cc'],
-                                         syringe_concentration=user_input['--cs'],
-                                         dcell=user_input['--dc'], dsyringe=user_input['--ds'],
-                                         uniform_cell_concentration=user_input['--uniform_cell_concentration'],
-                                         uniform_syringe_concentration=user_input['--uniform_syringe_concentration'],
-                                         concentration_range_factor=user_input['--concentration_range_factor']
-                                         )
+                                           syringe_concentration=user_input['--cs'],
+                                           dcell=user_input['--dc'], dsyringe=user_input['--ds'],
+                                           uniform_cell_concentration=user_input['--uniform_cell_concentration'],
+                                           uniform_syringe_concentration=user_input['--uniform_syringe_concentration'],
+                                           concentration_range_factor=user_input['--concentration_range_factor'],
+                                           uniform_rho=user_input['--uniform_rho'],
+                                           stated_rho=user_input['--stated_rho'],
+                                           drho=user_input['--drho'])
 
     except Exception as e:
         logging.error(str(e))
