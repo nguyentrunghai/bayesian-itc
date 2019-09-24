@@ -987,6 +987,8 @@ class CompetitiveBindingModel(BindingModel):
 # binding model for racemic mixtures.
 # mostly copied from TwoComponentBindingModel 
 
+# TODO initialize parameters from numbers
+
 class RacemicMixtureBindingModel(BindingModel):
     """
     Racemic Mixture Binding Model
