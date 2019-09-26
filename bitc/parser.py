@@ -138,8 +138,8 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
     twocomponent
       A twocomponent binding model. Analyzes only a single experiment
     
-    racemicmixture
-      A racemicmixture binding model
+    enantiomer
+      A enantiomer binding model
 
     Usage:
       bitc_mcmc.py twocomponent <datafile> <heatsfile> [-v | -vv | -vvv] [--cc=<c_cell>] [--cs=<c_syringe> ] [--dc=<dc_cell>] [--ds=<dc_syringe>] [options]
@@ -179,7 +179,7 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
                      '-v': And(int, lambda n: 0 <= n <= 3),
                      # str and found in this dict
                      'twocomponent': bool,
-                     'racemicmixture': bool,
+                     'enantiomer': bool,
                      'competitive': bool,
                      '--nfit': And(Use(int), lambda n: n > 0),
                      # Convert str to int, make sure that it is larger than 0
