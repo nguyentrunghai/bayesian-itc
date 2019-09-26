@@ -1361,18 +1361,15 @@ known_models = {'TwoComponent': TwoComponentBindingModel,
 
 
 
-
-
-
 class EnantiomerBindingModel(BindingModel):
     """
-    Racemic Mixture Binding Model
+    This model contains a new parameter rho whose prior is uniform between [0, 1]
+    rho is the proportion of concentration of the first ligand (Enantiomer)
     """
 
     def __init__(self, experiment, cell_concentration=None, syringe_concentration=None, dcell=0.1, dsyringe=0.1,
                  uniform_cell_concentration=False, uniform_syringe_concentration=False,
-                 concentration_range_factor=10.,
-                 uniform_rho=False, stated_rho=0.5, drho=0.1):
+                 concentration_range_factor=10.):
         """
         Initialize a RacemicMixtureBindingModel
         :param experiment: ExperimentMicrocal or ExperimentYAML object
@@ -1384,9 +1381,6 @@ class EnantiomerBindingModel(BindingModel):
         :param uniform_syringe_concentration: use uniform prior for syringe_concentration if True, else use log normal (bool)
         :param concentration_range_factor: the range of uniform prior will be from (stated_value / concentration_range_factor)
                                             to (stated_value * concentration_range_factor) (float)
-        :param uniform_rho: use uniform prior for rho
-        :param stated_rho: float in [0, 1], stated value of rho
-        :param drho: float, in [0, 1], relative uncertainty in rho
         """
 
         # HAI: I keep the same units as in TwoComponentBindingModel because they are working correctly in the cluster
@@ -1731,4 +1725,5 @@ class EnantiomerBindingModel(BindingModel):
 known_models = {'TwoComponent': TwoComponentBindingModel,
                 'Competitive': CompetitiveBindingModel,
                 'RacemicMixture': RacemicMixtureBindingModel,
+                'Enantiomer': EnantiomerBindingModel,
                 }
