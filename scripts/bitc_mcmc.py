@@ -335,6 +335,24 @@ if user_input['twocomponent']:
             logging.error(traceback.format_exc())
             raise Exception("MCMC model could not be constructed!\n" + str(e))
 
+elif user_input['racemicmixture']:
+    experiment = input_to_experiment(user_input['<datafile>'][0], user_input['<heatsfile>'][0])
+
+    models = list()
+    try:
+        model = RacemicMixtureBindingModel(experiment, cell_concentration=user_input['--cc'],
+                                           syringe_concentration=user_input['--cs'],
+                                           dcell=user_input['--dc'], dsyringe=user_input['--ds'],
+                                           uniform_cell_concentration=user_input['--uniform_cell_concentration'],
+                                           uniform_syringe_concentration=user_input['--uniform_syringe_concentration'],
+                                           concentration_range_factor=user_input['--concentration_range_factor']
+                                           )
+
+    except Exception as e:
+        logging.error(str(e))
+        logging.error(traceback.format_exc())
+        raise Exception("MCMC model could not be constructed!\n" + str(e))
+
 elif user_input['enantiomer']:
     experiment = input_to_experiment(user_input['<datafile>'][0], user_input['<heatsfile>'][0])
 
@@ -381,8 +399,12 @@ model.mcmc.sample(iter=niters, burn=nburn, thin=nthin, progress_bar=True, verbos
 if user_input['twocomponent']:    # Plot individual terms.
     plot_two_component_model_results(model)
 
+if user_input['racemicmixture']:
+    plot_racemicmixture_model_results(model)
+
 if user_input['enantiomer']:
     plot_enantiomer_model_results(model)
+
 
 
 print "pickling mcmc traces"
