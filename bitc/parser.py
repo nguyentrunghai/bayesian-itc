@@ -144,6 +144,7 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
     Usage:
       bitc_mcmc.py twocomponent <datafile> <heatsfile> [-v | -vv | -vvv] [--cc=<c_cell>] [--cs=<c_syringe> ] [--dc=<dc_cell>] [--ds=<dc_syringe>] [options]
       bitc_mcmc.py competitive (<datafile> <heatsfile>)... (-r <receptor> | --receptor <receptor>) [-v | -vv | -vvv] [options]
+      bitc_mcmc.py racemicmixture <datafile> <heatsfile> [-v | -vv | -vvv] [--cc=<c_cell>] [--cs=<c_syringe> ] [--dc=<dc_cell>] [--ds=<dc_syringe>] [options] 
       bitc_mcmc.py enantiomer <datafile> <heatsfile> [-v | -vv | -vvv] [--cc=<c_cell>] [--cs=<c_syringe> ] [--dc=<dc_cell>] [--ds=<dc_syringe>] [options] 
       bitc_mcmc.py (-h | --help)
       bitc_mcmc.py --license
@@ -180,6 +181,7 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
                      # str and found in this dict
                      'twocomponent': bool,
                      'enantiomer': bool,
+                     'racemicmixture': bool,
                      'competitive': bool,
                      '--nfit': And(Use(int), lambda n: n > 0),
                      # Convert str to int, make sure that it is larger than 0
