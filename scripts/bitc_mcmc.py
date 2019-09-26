@@ -9,7 +9,8 @@ import pymc
 import traceback
 from bitc.experiments import ExperimentMicroCal, ExperimentMicroCalWithDummyITC, ExperimentYaml
 from bitc.instruments import known_instruments, Instrument
-from bitc.models import TwoComponentBindingModel, CompetitiveBindingModel, RacemicMixtureBindingModel
+from bitc.models import TwoComponentBindingModel, CompetitiveBindingModel
+from bitc.models import RacemicMixtureBindingModel, EnantiomerBindingModel
 from bitc.parser import bitc_mcmc_parser
 from bitc.units import Quantity
 
@@ -69,7 +70,7 @@ def plot_two_component_model_results(model):
     outfile.close()
 
 
-def plot_racemic_mixture_model_results(model):
+def plot_enantiomer_model_results(model):
     pymc.Matplot.plot(model.mcmc.trace('P0')[:], '%s-P0' % model.experiment.name)
 
     pymc.Matplot.plot(model.mcmc.trace('Ls')[:], '%s-Ls' % model.experiment.name)
@@ -280,20 +281,18 @@ if user_input['twocomponent']:
             logging.error(traceback.format_exc())
             raise Exception("MCMC model could not be constructed!\n" + str(e))
 
-elif user_input['racemicmixture']:
+elif user_input['enantiomer']:
     experiment = input_to_experiment(user_input['<datafile>'][0], user_input['<heatsfile>'][0])
 
     models = list()
     try:
-        model = RacemicMixtureBindingModel(experiment, cell_concentration=user_input['--cc'],
-                                           syringe_concentration=user_input['--cs'],
-                                           dcell=user_input['--dc'], dsyringe=user_input['--ds'],
-                                           uniform_cell_concentration=user_input['--uniform_cell_concentration'],
-                                           uniform_syringe_concentration=user_input['--uniform_syringe_concentration'],
-                                           concentration_range_factor=user_input['--concentration_range_factor'],
-                                           uniform_rho=user_input['--uniform_rho'],
-                                           stated_rho=user_input['--stated_rho'],
-                                           drho=user_input['--drho'])
+        model = EnantiomerBindingModel(experiment, cell_concentration=user_input['--cc'],
+                                       syringe_concentration=user_input['--cs'],
+                                       dcell=user_input['--dc'], dsyringe=user_input['--ds'],
+                                       uniform_cell_concentration=user_input['--uniform_cell_concentration'],
+                                       uniform_syringe_concentration=user_input['--uniform_syringe_concentration'],
+                                       concentration_range_factor=user_input['--concentration_range_factor']
+                                       )
 
     except Exception as e:
         logging.error(str(e))
@@ -328,8 +327,8 @@ model.mcmc.sample(iter=niters, burn=nburn, thin=nthin, progress_bar=True, verbos
 if user_input['twocomponent']:    # Plot individual terms.
     plot_two_component_model_results(model)
 
-if user_input['racemicmixture']:
-    plot_racemic_mixture_model_results(model)
+if user_input['enantiomer']:
+    plot_enantiomer_model_results(model)
 
 
 print "pickling mcmc traces"
