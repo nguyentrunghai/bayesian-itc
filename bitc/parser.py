@@ -143,8 +143,8 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
 
     Usage:
       bitc_mcmc.py twocomponent <datafile> <heatsfile> [-v | -vv | -vvv] [--cc=<c_cell>] [--cs=<c_syringe> ] [--dc=<dc_cell>] [--ds=<dc_syringe>] [options]
-      bitc_mcmc.py racemicmixture <datafile> <heatsfile> [-v | -vv | -vvv] [--cc=<c_cell>] [--cs=<c_syringe> ] [--dc=<dc_cell>] [--ds=<dc_syringe>] [options] 
       bitc_mcmc.py competitive (<datafile> <heatsfile>)... (-r <receptor> | --receptor <receptor>) [-v | -vv | -vvv] [options]
+      bitc_mcmc.py enantiomer <datafile> <heatsfile> [-v | -vv | -vvv] [--cc=<c_cell>] [--cs=<c_syringe> ] [--dc=<dc_cell>] [--ds=<dc_syringe>] [options] 
       bitc_mcmc.py (-h | --help)
       bitc_mcmc.py --license
       bitc_mcmc.py --version
@@ -171,9 +171,6 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
       --uniform_cell_concentration           Use uniform prior for cell concentration if True, use log normal if False
       --uniform_syringe_concentration        Use uniform prior for syringe concentration if True, use log normal if False
       --concentration_range_factor <c_facctor>        To define range of uniform prior. It will be between stated_value/this_factor and stated_value*this_factor [default: 10.]
-      --uniform_rho                          Use uniform prior for rho (racemic mixture binding model) if True, use log normal if False
-      --stated_rho=<rho>                     Stated value of rho
-      --drho=<drho>                          Relative uncertainty in rho
 """
     arguments = docopt(__usage__, argv=argv, version='bitc_mcmc.py, pre-alpha')
     schema = Schema({'--help': bool,  # True or False are accepted
@@ -215,9 +212,6 @@ def bitc_mcmc_parser(argv=sys.argv[1:]):
                      '--uniform_cell_concentration': bool,
                      '--uniform_syringe_concentration': bool,
                      '--concentration_range_factor': Use(float),
-                     '--uniform_rho': bool,
-                     '--stated_rho': Use(float),
-                     '--drho': Use(float),
                      })
 
     return schema.validate(arguments)
