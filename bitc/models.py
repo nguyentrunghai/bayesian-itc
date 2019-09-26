@@ -1211,7 +1211,7 @@ class RacemicMixtureBindingModel(BindingModel):
             # total concentration of ligand 2
             C0_L2 = (1. - rho) * C0_L
 
-            RL1n[n], RL2n[n] = RacemicMixtureBindingModel.equilibrium_concentrations(Kd1, Kd2, C0_R, C0_L1, C0_L2, V0) 
+            RL1n[n], RL2n[n] = RacemicMixtureBindingModel.equilibrium_concentrations(Kd1, Kd2, C0_R, C0_L1, C0_L2, V0)
 
         # Compute expected injection heats.
         # q_n_model[n] is the expected heat from injection n
@@ -1330,7 +1330,7 @@ class EnantiomerBindingModel(BindingModel):
                  uniform_cell_concentration=False, uniform_syringe_concentration=False,
                  concentration_range_factor=10.):
         """
-        Initialize a RacemicMixtureBindingModel
+        Initialize a EnantiomerBindingModel
         :param experiment: ExperimentMicrocal or ExperimentYAML object
         :param cell_concentration: override for cell/protein concentration to be used (float in mM)
         :param syringe_concentration: override for syringe/ligand concentration to be used (float in mM)
@@ -1570,7 +1570,7 @@ class EnantiomerBindingModel(BindingModel):
             # total concentration of ligand 2
             C0_L2 = (1. - rho) * C0_L
 
-            RL1n[n], RL2n[n] = RacemicMixtureBindingModel.equilibrium_concentrations(Kd1, Kd2, C0_R, C0_L1, C0_L2, V0)
+            RL1n[n], RL2n[n] = EnantiomerBindingModel.equilibrium_concentrations(Kd1, Kd2, C0_R, C0_L1, C0_L2, V0)
 
         # Compute expected injection heats.
         # q_n_model[n] is the expected heat from injection n
