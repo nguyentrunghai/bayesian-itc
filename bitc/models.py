@@ -992,12 +992,12 @@ class CompetitiveBindingModel(BindingModel):
 class RacemicMixtureBindingModel(BindingModel):
     """
     Racemic Mixture Binding Model
+    the two enantiomers have the same concentration
     """
 
     def __init__(self, experiment, cell_concentration=None, syringe_concentration=None, dcell=0.1, dsyringe=0.1,
                  uniform_cell_concentration=False, uniform_syringe_concentration=False,
-                 concentration_range_factor=10.,
-                 uniform_rho=False, stated_rho=0.5, drho=0.1):
+                 concentration_range_factor=10.):
         """
         Initialize a RacemicMixtureBindingModel
         :param experiment: ExperimentMicrocal or ExperimentYAML object
@@ -1009,9 +1009,6 @@ class RacemicMixtureBindingModel(BindingModel):
         :param uniform_syringe_concentration: use uniform prior for syringe_concentration if True, else use log normal (bool)
         :param concentration_range_factor: the range of uniform prior will be from (stated_value / concentration_range_factor)
                                             to (stated_value * concentration_range_factor) (float)
-        :param uniform_rho: use uniform prior for rho
-        :param stated_rho: float in [0, 1], stated value of rho
-        :param drho: float, in [0, 1], relative uncertainty in rho
         """
 
         # HAI: I keep the same units as in TwoComponentBindingModel because they are working correctly in the cluster
@@ -1112,34 +1109,6 @@ class RacemicMixtureBindingModel(BindingModel):
 
         self.DeltaH1 = BindingModel._uniform_prior_with_guesses_and_units('DeltaH1', 0., 100., -100., ureg.kilocalorie/ureg.mole)
         self.DeltaH2 = BindingModel._uniform_prior_with_guesses_and_units('DeltaH2', 0., 100., -100., ureg.kilocalorie/ureg.mole)
-
-        #self.rho = BindingModel._uniform_prior('rho', 0.5, 1., 0.)
-
-        if uniform_rho:
-            print("Use uniform prior for rho.")
-
-            rho_lower = stated_rho - drho * stated_rho
-            assert rho_lower > 0, "rho_lower must be positive"
-            rho_upper = stated_rho + drho * stated_rho
-            assert rho_upper < 1, "rho_upper must be less than 1"
-
-            print("stated_rho: %0.5f" % stated_rho)
-            print("rho_lower: %0.5f" % rho_lower)
-            print("rho_upper: %0.5f" % rho_upper)
-
-            self.rho = BindingModel._uniform_prior('rho', stated_rho, rho_upper, rho_lower)
-
-        else:
-            print("Use log normal prior for rho.")
-            assert 0 < stated_rho < 1, "Stated rho out of range: %0.2f" % stated_rho
-            assert 0 < drho < 1, "drho out of range: %0.2f" % drho
-
-            rho_uncertainty = drho * stated_rho
-            print("Stated rho: %0.5f" % stated_rho)
-            print("drho: %0.5f" % drho)
-            print("Uncertainty in rho: %0.5f" % rho_uncertainty)
-
-            self.rho = BindingModel._lognormal_prior('rho', stated_rho, rho_uncertainty)
 
 
         # Define priors for thermodynamic quantities.
@@ -1274,7 +1243,6 @@ class RacemicMixtureBindingModel(BindingModel):
                             lambda
                                 P0=self.P0,
                                 Ls=self.Ls,
-                                rho=self.rho,
                                 DeltaH1=self.DeltaH1,
                                 DeltaH2=self.DeltaH2,
                                 DeltaG1=self.DeltaG1,
@@ -1285,7 +1253,7 @@ class RacemicMixtureBindingModel(BindingModel):
                                 self.DeltaVn,
                                 P0,
                                 Ls,
-                                rho,
+                                0.5,
                                 DeltaH1,
                                 DeltaH2,
                                 DeltaH_0,
@@ -1306,7 +1274,6 @@ class RacemicMixtureBindingModel(BindingModel):
             mcmc.use_step_method(RescalingStep,
                     {   'Ls': self.Ls,
                         'P0': self.P0,
-                        'rho': self.rho,
                         'DeltaH1': self.DeltaH1,
                         'DeltaH2': self.DeltaH2,
                         'DeltaG1': self.DeltaG1,
@@ -1324,7 +1291,6 @@ class RacemicMixtureBindingModel(BindingModel):
         mcmc.use_step_method(pymc.Metropolis, self.DeltaDeltaG)
         mcmc.use_step_method(pymc.Metropolis, self.DeltaH1)
         mcmc.use_step_method(pymc.Metropolis, self.DeltaH2)
-        mcmc.use_step_method(pymc.Metropolis, self.rho)
         mcmc.use_step_method(pymc.Metropolis, self.DeltaH_0)
         if P0_stated > Quantity('0.0 molar'):
             mcmc.use_step_method(pymc.Metropolis, self.P0)
@@ -1350,13 +1316,6 @@ class RacemicMixtureBindingModel(BindingModel):
         log_sigma_min = log_sigma_guess - 10
         log_sigma_max = log_sigma_guess + 5
         return log_sigma_guess, log_sigma_max, log_sigma_min
-
-
-# Container of all models that this module provides for use
-known_models = {'TwoComponent': TwoComponentBindingModel,
-                'Competitive': CompetitiveBindingModel,
-                'RacemicMixture': RacemicMixtureBindingModel,
-                }
 
 
 
