@@ -1152,7 +1152,9 @@ class RacemicMixtureBindingModel(BindingModel):
 
         d = numpy.sqrt(a*a - 3*b)
 
-        theta = numpy.arccos((-2.*a**3 + 9.*a*b - 27.*c) / (2.*d**3))
+        e = numpy.clip((-2. * a**3 + 9. * a * b - 27. * c) / (2. * d**3), a_min=-1, a_max=1)
+
+        theta = numpy.arccos(e)
 
         RL1 = C0_L1*(2.*d*numpy.cos(theta/3.) - a) / (3.*Kd1 + (2.*d*numpy.cos(theta/3.) - a))
         RL2 = C0_L2*(2.*d*numpy.cos(theta/3.) - a) / (3.*Kd2 + (2.*d*numpy.cos(theta/3.) - a))
@@ -1511,7 +1513,9 @@ class EnantiomerBindingModel(BindingModel):
 
         d = numpy.sqrt(a*a - 3*b)
 
-        theta = numpy.arccos((-2.*a**3 + 9.*a*b - 27.*c) / (2.*d**3))
+        e = numpy.clip((-2. * a**3 + 9. * a * b - 27. * c) / (2. * d**3), a_min=-1, a_max=1)
+
+        theta = numpy.arccos(e)
 
         RL1 = C0_L1*(2.*d*numpy.cos(theta/3.) - a) / (3.*Kd1 + (2.*d*numpy.cos(theta/3.) - a))
         RL2 = C0_L2*(2.*d*numpy.cos(theta/3.) - a) / (3.*Kd2 + (2.*d*numpy.cos(theta/3.) - a))
